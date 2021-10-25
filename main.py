@@ -8,7 +8,7 @@ class Morpion:
     # - state pour l'état courant du Morpion
     # - human pour indiquer si c'est joueur vs IA
     # - currentPlayer pour indiquer le joueur qui joue (X ou O). None si c'est Joueur vs IA car on laisse l'humain choisir son joueur (X ou Y)
-    def __init__(self, state, human, player=None):
+    def __init__(self, state, human=None, player=None):
         self.state = state
         self.human = human
         self.currentPlayer = player
@@ -16,6 +16,9 @@ class Morpion:
     # Récupérer le boolean qui détermnine si c'est un humain qui joue.
     def get_human(self):
         return self.human
+
+    def set_human(self, human):
+        self.human = human
 
     # Récupérer le player courant.
     def get_currentPlayer(self):
@@ -32,14 +35,6 @@ class Morpion:
     # Modifier l'état courant en lui passant un tuple de coordonnées et la valeur à y mettre.
     def set_state(self, key, value):
         self.state[key[0]][key[1]] = value
-
-    # Récupérer le meilleur score courant.
-    #    def get_bestScore(self):
-    #        return self.bestScore
-
-    # Modifier le meilleur score courant.
-    #    def set_bestScore(self, bestScore):
-    #        self.bestScore = bestScore
 
     # Vérifier si le Morpion à l'état courant est vide.
     def empty(self):
@@ -170,6 +165,25 @@ class Morpion:
         else:
             return False
 
+    #Vérifier si un joueur veut jouer sinon deux IA s'affrontent
+    def checkPlayer(self):
+        gameType = input('Do you want to play ? (yes or no) :')
+        if gameType == 'yes':
+            return True
+        elif gameType == 'no':
+            return False
+        else:
+            print('Entrez un choix valide !')
+            self.checkPlayer(gameType)
+
+    def checkIA(self):
+        iaStart = input('Qui commence en premier : (X ou O)')
+        if iaStart == 'X' or iaStart == 'O':
+            self.set_currentPlayer(iaStart)
+        else:
+            print('Entrez un choix valide !')
+            self.checkIA()
+
     # Premettre à un joueur de jouer au Morpion contre une IA
     # Récupérer la position que rentre le joueur et insérer sa valeur si la position est valide
     def playHuman(self):
@@ -219,6 +233,7 @@ class Morpion:
                         self.set_state(move[0], move[1])
                         self.set_currentPlayer('X')
         else:
+            self.checkIA()
             while True:
                 self.drawGame()
 
@@ -243,9 +258,9 @@ class Morpion:
 
 # Main du programme afin de lancer le Morpion
 def main():
-    morpion = Morpion([['_', '_', '_'], ['_', '_', '_'], ['_', '_', '_']], True)
+    morpion = Morpion([['_', '_', '_'], ['_', '_', '_'], ['_', '_', '_']])
+    morpion.set_human(morpion.checkPlayer())
     morpion.game()
-
 
 # Exécuter le main
 if __name__ == "__main__":
