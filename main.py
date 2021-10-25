@@ -165,7 +165,7 @@ class Morpion:
         else:
             return False
 
-    #Vérifier si un joueur veut jouer sinon deux IA s'affrontent
+    # Vérifier si un joueur veut jouer sinon deux IA s'affrontent
     def checkPlayer(self):
         gameType = input('Do you want to play ? (yes or no) :')
         if gameType == 'yes':
@@ -176,6 +176,7 @@ class Morpion:
             print('Entrez un choix valide !')
             self.checkPlayer(gameType)
 
+    # Vérifier quel IA on fait commencer en premier (X ou O)
     def checkIA(self):
         iaStart = input('Qui commence en premier : (X ou O)')
         if iaStart == 'X' or iaStart == 'O':
